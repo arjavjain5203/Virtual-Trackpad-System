@@ -1,0 +1,1 @@
+KERNEL=="uinput", SUBSYSTEM=="misc", OTHERS="input", MODE="0660", GROUP="input"

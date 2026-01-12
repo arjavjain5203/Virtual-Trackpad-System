@@ -1,12 +1,18 @@
 # Virtual Trackpad System
 
-A Linux background daemon that turns your webcam into a virtual trackpad using hand gestures.
+**Transform your webcam into a high-precision, touch-free mouse.**
 
-## Features
-- **Gesture Control**: Move, Click, Scroll, and Switch states.
-- **Low Latency**: Uses Kalman Filtering and Adaptive Smoothing.
-- **System Integration**: Runs as a systemd service with uinput integration.
-- **Privacy**: Processed locally, no data stored or sent.
+The **Virtual Trackpad System** is an AI-powered input driver that allows you to control your computer using intuitive hand gestures. By leveraging Google's **MediaPipe** for robust hand tracking and **Kalman Filters** for jitter reduction, it provides a smooth, low-latency cursor experience comparable to a physical trackpad.
+
+Designed for touchless interaction, it uses a **Two-Handed Paradigm** (Left Hand for Mode, Right Hand for Action) to prevent accidental clicks while maximizing functionality.
+
+## Key Features
+- **Cross-Platform**: Works natively on **Linux** (via `uinput` for system-level control) and **Windows** (via `pyautogui`).
+- **Two-Handed Grammar**: Separates "Intent" (Mode) from "Execution" (Action) for a reliable, professional-grade workflow.
+- **Precision Smoothing**: integrated **Kalman Filtering** and Adaptive Exponential Smoothing ensures the cursor is stable when still, yet responsive when moving.
+- **Visual Debugger**: Real-time overlay to visualize hand tracking, active states, and gesture recognition confidence.
+- **Privacy First**: All processing is done **locally** on your CPU. No video data is stored or transmitted.
+- **Background Service**: Can run as a transparent background daemon (Linux systemd).
 
 ### Prerequisites
 

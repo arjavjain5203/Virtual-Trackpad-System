@@ -1,0 +1,5 @@
+mediapipe
+opencv-python
+evdev; sys_platform == 'linux'
+pyautogui
+numpy

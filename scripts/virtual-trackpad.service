@@ -1,0 +1,14 @@
+[Unit]
+Description=Virtual Trackpad Service
+After=multi-user.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/arjav-jain/Coding/Python/VirtualKeyboard
+ExecStart=/home/arjav-jain/Coding/Python/VirtualKeyboard/venv/bin/python src/main.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

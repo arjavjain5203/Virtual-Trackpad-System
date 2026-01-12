@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+
+# Logs
+gesture_logs.txt
+*.log
+
+# OS Metadata
+.DS_Store
+Thumbs.db
