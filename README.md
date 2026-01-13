@@ -52,17 +52,29 @@ The system uses a **Left Hand = Mode**, **Right Hand = Action** paradigm.
 | **CLICK** | Thumb Up | **Click/Tap** enabled |
 | **DRAG** | OK Sign (Index+Thumb circle) | **Drag** enabled |
 | **SCROLL** | Two Fingers (Index+Middle) | **Scroll** enabled |
-| **SYSTEM** | Three Fingers | (Reserved for shortcuts) |
+| **NAVIGATION** | Three Fingers | **Media/Arrow Control** |
 
-**2. Right Hand (Executor)**
-| Action | Hand Pose | Effect (Dependent on Mode) |
+**2. Right Hand (Execution)**
+
+**Standard Modes (Armed, Click, Drag, Scroll):**
+| Action | Hand Pose | Effect |
 | :--- | :--- | :--- |
-| **CURSOR** | Index Finger | Moves Cursor (in ARMED/CLICK/DRAG) |
-| **CLICK** | **Fist (Close Hand)** | **Left Click** (in ARMED Mode) |
-| **TAP**| Pinch (Thumb + Index) | Left Click (in CLICK Mode) |
-| **DRAG** | Pinch (Thumb + Index) | Holds Click (in DRAG Mode) |
-| **SCROLL** | Index Finger (Vertical) | Scrolls Page (in SCROLL Mode) |
-| **CANCEL** | Fist | Stops all actions (in other modes) |
+| **CURSOR** | Index Finger | Moves Cursor |
+| **CLICK** | Fist (In ARMED Mode) | Left Click |
+| **TAP**| Pinch (Thumb + Index) | Left Click |
+| **DRAG** | Pinch (Thumb + Index) | Holds Click (Drag) |
+| **SCROLL** | Index Finger (Vertical) | Vertical Scroll |
+| **CANCEL** | Fist | Stops Action |
+
+**Navigation Mode (Left Hand = 3 Fingers):**
+| Gesture | Hand Pose | Action |
+| :--- | :--- | :--- |
+| **SWIPE RIGHT** | Two Fingers (Index+Middle) Move Right | Right Arrow (Skip Forward) |
+| **SWIPE LEFT** | Two Fingers Move Left | Left Arrow (Skip Backward) |
+| **SWIPE UP** | Two Fingers Move Up | Up Arrow |
+| **SWIPE DOWN** | Two Fingers Move Down | Down Arrow |
+| **PLAY/PAUSE** | Open Palm (Hold 0.5s) | Space Bar |
+| **CANCEL** | Fist | No Action |
 
 ### Running
 - **Linux**: `sudo ./venv/bin/python src/main.py`

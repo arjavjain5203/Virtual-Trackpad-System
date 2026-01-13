@@ -127,6 +127,36 @@ def main():
             if action != last_action:
                 pass 
                 
+                # Handle FLICK (Swipe)
+                if action == RightHandAction.FLICK:
+                    # Determine direction from FSM
+                    # We need to access fsm.swipe_direction which we set in fsm._check_swipe
+                    # BUT fsm object in main loop is generic.
+                    # We should probably return data from FSM or access attribute.
+                    # Let's assume we can access fsm.swipe_direction
+                    direction = getattr(fsm, 'swipe_direction', None)
+                    if mouse and direction:
+                        logger.info(f"Swipe Detected: {direction}")
+                        if direction == "RIGHT":
+                            mouse.press_key(evdev.ecodes.KEY_RIGHT)
+                        elif direction == "LEFT":
+                            mouse.press_key(evdev.ecodes.KEY_LEFT)
+                        elif direction == "UP":
+                            mouse.press_key(evdev.ecodes.KEY_UP)
+                        elif direction == "DOWN":
+                            mouse.press_key(evdev.ecodes.KEY_DOWN)
+
+                # Handle PUSH
+                if action == RightHandAction.PUSH:
+                    if mouse:
+                         logger.info("Push Detected (Space)")
+                         mouse.press_key(evdev.ecodes.KEY_SPACE)
+                         # Add delay to prevent spam? One-shot is handled by state transition.
+                         # PUSH state might persist if hand stays open?
+                         # Ideally PUSH should be a momentary trigger or we need debouncing.
+                         # Since this block is `if action != last_action`, it only fires ONCE on entry.
+                         # So holding PUSH will not spam space. Correct.
+
                 # Handle DRAG Start/End (Pinch)
                 if action == RightHandAction.DRAG:
                     if mouse and not is_dragging:
@@ -146,15 +176,6 @@ def main():
                 if action == RightHandAction.TAP:
                     if mouse:
                         mouse.click(evdev.ecodes.BTN_LEFT, 1)
-                        # If trigger is FIST, we don't want to hold it forever unless logic changes.
-                        # For "Tap", we click and release.
-                        # If user holds fist, it might spam clicks?
-                        # FSM update loop runs continuously. 
-                        # action == TAP will persist as long as Fist is held.
-                        # We need to ensure we only click ONCE per transition.
-                        # Since we are inside `if action != last_action:`, this block ONLY runs on entry.
-                        # So it will be Click Down. We need a Click Up somewhere?
-                        # Or we treat TAP as a discrete "click and release immediate" event?
                         time.sleep(0.05) 
                         mouse.click(evdev.ecodes.BTN_LEFT, 0)
                         
@@ -211,9 +232,10 @@ def main():
                     prev_y = 0
 
             elif action == RightHandAction.FLICK:
-                pass
+                pass # Handled in state transition
             
-            else:
+            elif action == RightHandAction.PUSH:
+                pass # Handled in state transition
                 # IDLE / CANCEL
                 prev_x, prev_y = 0,0
                 # Filter reset on re-entry handle by state transition check above

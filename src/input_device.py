@@ -14,9 +14,11 @@ class VirtualMouse:
                 from evdev import UInput, ecodes as e
                 self.evdev = evdev
                 self.e = e
+                # Add Keyboard Capabilities
                 cap = {
                     e.EV_REL: (e.REL_X, e.REL_Y, e.REL_WHEEL),
-                    e.EV_KEY: (e.BTN_LEFT, e.BTN_RIGHT),
+                    e.EV_KEY: (e.BTN_LEFT, e.BTN_RIGHT, 
+                               e.KEY_LEFT, e.KEY_RIGHT, e.KEY_UP, e.KEY_DOWN, e.KEY_SPACE),
                 }
                 self.impl = UInput(cap, name="Virtual Trackpad", version=0x3)
                 logger.info("Initialized Linux evdev Input")
@@ -69,11 +71,7 @@ class VirtualMouse:
         else:
             # Map button
             btn_str = 'left'
-            # Assuming button check from main.py passes evdev constants, 
-            # we need to handle that or map abstractly.
-            # Ideally main.py should pass 'left'/'right', but it currently passes evdev codes.
-            # We will handle the integer check if possible, or refactor main.py constants.
-            
+            # Assuming button check from main.py passes evdev constants
             # Simple Hack: We know main.py uses evdev.ecodes.BTN_LEFT (272)
             if button == 272: btn_str = 'left'
             elif button == 273: btn_str = 'right'
@@ -82,7 +80,38 @@ class VirtualMouse:
                 self.pyautogui.mouseDown(button=btn_str, _pause=False)
             else:
                 self.pyautogui.mouseUp(button=btn_str, _pause=False)
-
+                
+    def press_key(self, key_code):
+        """
+        Press and release a key.
+        key_code: evdev key code (e.g., e.KEY_LEFT)
+        """
+        if not self.impl: return
+        
+        if self.os == 'Linux':
+            self.impl.write(self.e.EV_KEY, key_code, 1) # Down
+            self.impl.syn()
+            self.impl.write(self.e.EV_KEY, key_code, 0) # Up
+            self.impl.syn()
+        else:
+            # Map evdev key codes to pyautogui strings
+            # This requires knowing the integer values of evdev keys if we import them in main
+            # KEY_LEFT=105, KEY_RIGHT=106, KEY_UP=103, KEY_DOWN=108, KEY_SPACE=57
+            # We will use a simple mapping or pass strings from main if we refactor.
+            # For now, let's assume we receive evdev ints.
+            
+            key_map = {
+                105: 'left',
+                106: 'right',
+                103: 'up',
+                108: 'down',
+                57: 'space'
+            }
+            
+            k = key_map.get(key_code)
+            if k:
+                self.pyautogui.press(k)
     def close(self):
-        if self.os == 'Linux' and self.impl:
+        if self.os == 'Linux' and self.impl and hasattr(self.impl, 'close'):
             self.impl.close()
+        # Windows/Mac PyAutoGUI doesn't need explicit close
